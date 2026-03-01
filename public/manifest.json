@@ -1,0 +1,22 @@
+{
+    "name": "Виртуальный музей",
+    "short_name": "Музей",
+    "description": "Интерактивный виртуальный музей истории колледжа",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#0f0f1a",
+    "theme_color": "#0f0f1a",
+    "icons": [
+        {
+            "src": "/images/logonix.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/images/logonix.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}

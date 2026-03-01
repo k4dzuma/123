@@ -1,0 +1,200 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// ==================== USERS ====================
+
+model User {
+  id            Int       @id @default(autoincrement())
+  login         String    @unique
+  email         String    @unique
+  password      String
+  avatar        String    @default("default_avatar.png")
+  role          String    @default("USER") // USER, ADMIN
+  totalScore    Int       @default(0)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  comments      Comment[]
+  sessions      PlayerSession[]
+  warningsReceived UserWarning[] @relation("WarningUser")
+  warningsGiven    UserWarning[] @relation("WarningAdmin")
+  adminSecurity AdminSecurity?
+  adminLogs     AdminLog[]
+}
+
+model AdminSecurity {
+  id            Int       @id @default(autoincrement())
+  userId        Int       @unique
+  pin           String
+  attempts      Int       @default(0)
+  lastAttempt   DateTime?
+
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// ==================== CONTENT ====================
+
+model Section {
+  id          Int       @id @default(autoincrement())
+  name        String
+  image       String
+  description String    @default("")
+  sortOrder   Int       @default(0)
+
+  subSections SubSection[]
+}
+
+model SubSection {
+  id          Int       @id @default(autoincrement())
+  sectionId   Int
+  name        String
+  sortOrder   Int       @default(0)
+
+  section     Section       @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  items       ContentItem[]
+}
+
+model ContentItem {
+  id          Int       @id @default(autoincrement())
+  subSectionId Int
+  title       String
+  image       String    @default("")
+  text        String    @default("")
+  sortOrder   Int       @default(0)
+
+  subSection  SubSection @relation(fields: [subSectionId], references: [id], onDelete: Cascade)
+}
+
+model Exhibit {
+  id          Int       @id @default(autoincrement())
+  name        String
+  image       String
+}
+
+model Celebrity {
+  id          Int       @id @default(autoincrement())
+  name        String
+  fullName    String    @default("")
+  description String    @default("")
+  role        String    @default("")
+  image       String
+  modalImage  String    @default("")
+}
+
+// ==================== COMMENTS ====================
+
+model Comment {
+  id         Int       @id @default(autoincrement())
+  userId     Int
+  content    String
+  imagePath  String?
+  parentId   Int?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  parent     Comment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: SetNull)
+  replies    Comment[] @relation("CommentReplies")
+}
+
+// ==================== QUESTS ====================
+
+model Quest {
+  id              Int       @id @default(autoincrement())
+  title           String
+  description     String    @default("")
+  durationMinutes Int       @default(30)
+  difficultyLevel String    @default("medium")
+  isActive        Boolean   @default(true)
+  createdBy       Int?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  steps           QuestStep[]
+  sessions        PlayerSession[]
+}
+
+model QuestStep {
+  id           Int       @id @default(autoincrement())
+  questId      Int
+  stepOrder    Int       @default(1)
+  title        String
+  description  String
+  solutionHash String
+  hintText     String?
+  stepScore    Int       @default(100)
+  maxAttempts  Int       @default(3)
+  mediaPath    String?
+
+  quest        Quest     @relation(fields: [questId], references: [id], onDelete: Cascade)
+  events       SessionEvent[]
+}
+
+model PlayerSession {
+  id           Int       @id @default(autoincrement())
+  playerId     Int
+  questId      Int
+  sessionScore Int       @default(0)
+  startTime    DateTime  @default(now())
+  endTime      DateTime?
+  currentStepId Int?
+  status       String    @default("in_progress") // in_progress, completed, abandoned
+
+  player       User      @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  quest        Quest     @relation(fields: [questId], references: [id], onDelete: Cascade)
+  events       SessionEvent[]
+
+  @@index([playerId])
+  @@index([questId])
+}
+
+model SessionEvent {
+  id            Int       @id @default(autoincrement())
+  sessionId     Int
+  eventType     String    // step_started, solution_attempt, step_completed, hint_used
+  relatedStepId Int?
+  eventData     String?
+  scoreDelta    Int       @default(0)
+  createdAt     DateTime  @default(now())
+
+  session       PlayerSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  step          QuestStep?    @relation(fields: [relatedStepId], references: [id], onDelete: SetNull)
+
+  @@index([sessionId])
+}
+
+// ==================== ADMIN ====================
+
+model AdminLog {
+  id         Int       @id @default(autoincrement())
+  userId     Int
+  action     String
+  details    String?
+  ipAddress  String    @default("127.0.0.1")
+  createdAt  DateTime  @default(now())
+
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model UserWarning {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  adminId   Int
+  reason    String
+  createdAt DateTime  @default(now())
+  expiresAt DateTime
+
+  user      User      @relation("WarningUser", fields: [userId], references: [id], onDelete: Cascade)
+  admin     User      @relation("WarningAdmin", fields: [adminId], references: [id], onDelete: Cascade)
+}
+
+model Setting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}
