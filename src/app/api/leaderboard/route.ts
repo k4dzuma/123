@@ -16,7 +16,7 @@ export async function GET() {
             },
         })
 
-        const leaderboard = users.map((u, i) => ({
+        const leaderboard = users.map((u: any, i: any) => ({
             rank: i + 1,
             id: u.id,
             login: u.login,

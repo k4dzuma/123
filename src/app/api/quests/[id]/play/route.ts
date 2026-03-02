@@ -63,8 +63,8 @@ export async function POST(
                 }
             }
 
-            const currentStep = quest.steps.find((s) => s.id === session!.currentStepId)
-            const stepIndex = quest.steps.findIndex((s) => s.id === session!.currentStepId)
+            const currentStep = quest.steps.find((s: any) => s.id === session!.currentStepId)
+            const stepIndex = quest.steps.findIndex((s: any) => s.id === session!.currentStepId)
 
             return NextResponse.json({
                 status: 'in_progress',
@@ -95,7 +95,7 @@ export async function POST(
                 return NextResponse.json({ error: 'Сессия не найдена' }, { status: 404 })
             }
 
-            const step = quest.steps.find((s) => s.id === parseInt(stepId))
+            const step = quest.steps.find((s: any) => s.id === parseInt(stepId))
             if (!step) {
                 return NextResponse.json({ error: 'Шаг не найден' }, { status: 404 })
             }
@@ -111,7 +111,7 @@ export async function POST(
 
             if (attemptCount >= step.maxAttempts) {
                 // Move to next step
-                const stepIndex = quest.steps.findIndex((s) => s.id === step.id)
+                const stepIndex = quest.steps.findIndex((s: any) => s.id === step.id)
                 const nextStep = quest.steps[stepIndex + 1]
 
                 if (nextStep) {
@@ -179,7 +179,7 @@ export async function POST(
                 })
 
                 const newScore = session.sessionScore + score
-                const stepIndex = quest.steps.findIndex((s) => s.id === step.id)
+                const stepIndex = quest.steps.findIndex((s: any) => s.id === step.id)
                 const nextStep = quest.steps[stepIndex + 1]
 
                 if (nextStep) {
@@ -245,7 +245,7 @@ export async function POST(
                 return NextResponse.json({ error: 'Сессия не найдена' }, { status: 404 })
             }
 
-            const step = quest.steps.find((s) => s.id === parseInt(stepId))
+            const step = quest.steps.find((s: any) => s.id === parseInt(stepId))
             if (!step || !step.hintText) {
                 return NextResponse.json({ error: 'Подсказка недоступна' }, { status: 404 })
             }

@@ -15,7 +15,7 @@ export async function GET() {
             },
         })
 
-        const result = quests.map((q) => ({
+        const result = quests.map((q: any) => ({
             id: q.id,
             title: q.title,
             description: q.description,

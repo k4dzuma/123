@@ -16,7 +16,7 @@ export async function GET() {
         })
 
         return NextResponse.json(
-            quests.map((q) => ({
+            quests.map((q: any) => ({
                 id: q.id,
                 title: q.title,
                 description: q.description,

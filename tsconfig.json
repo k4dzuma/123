@@ -38,6 +38,7 @@
   ],
   "exclude": [
     "node_modules",
+    "prisma",
     "ui-ux-pro-max-skill-2.2.1"
   ]
 }
