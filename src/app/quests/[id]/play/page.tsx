@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useTheme } from '@/components/theme/theme-provider'
 import { ArrowLeft, Send, Lightbulb, Trophy, Loader2, CheckCircle2, XCircle, AlertTriangle, Star, Target } from 'lucide-react'
 import Link from 'next/link'
+import { Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { AncientCoin } from '@/components/3d/ancient-coin'
 
@@ -251,7 +252,9 @@ export default function QuestPlayPage() {
                                             <ambientLight intensity={0.5} />
                                             <pointLight position={[10, 10, 10]} intensity={1} />
                                             <spotLight position={[-10, 10, 10]} angle={0.15} penumbra={1} />
-                                            <AncientCoin />
+                                            <Suspense fallback={null}>
+                                                <AncientCoin />
+                                            </Suspense>
                                         </Canvas>
                                     </div>
                                 </div>

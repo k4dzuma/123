@@ -25,7 +25,7 @@ export function AncientCoin() {
             rotationIntensity={0.5}
             floatIntensity={1}
         >
-            <mesh ref={meshRef} castShadow receiveShadow>
+            <mesh ref={meshRef} castShadow receiveShadow rotation={[Math.PI / 2, 0, 0]}>
                 {/* Thin cylinder for the coin shape */}
                 <cylinderGeometry args={[2, 2, 0.15, 64]} />
                 <meshStandardMaterial
