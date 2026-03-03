@@ -17,19 +17,19 @@ export function GlobalBackground() {
                 style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
             >
                 <Sparkles
-                    count={250}
-                    scale={25}
-                    size={2}
-                    speed={0.3}
-                    opacity={isDark ? 0.3 : 0.1}
+                    count={450}
+                    scale={30}
+                    size={3}
+                    speed={0.4}
+                    opacity={isDark ? 0.35 : 0.15}
                     color="#38bdf8"
                 />
                 <Sparkles
-                    count={100}
-                    scale={30}
-                    size={5}
-                    speed={0.15}
-                    opacity={isDark ? 0.2 : 0.05}
+                    count={200}
+                    scale={35}
+                    size={4}
+                    speed={0.2}
+                    opacity={isDark ? 0.25 : 0.1}
                     color="#ffffff"
                 />
             </Canvas>
