@@ -14,7 +14,8 @@ export async function GET() {
         })
 
         return NextResponse.json(sections)
-    } catch {
-        return NextResponse.json({ error: 'Ошибка сервера' }, { status: 500 })
+    } catch (e) {
+        console.error('API Error in /api/sections:', e)
+        return NextResponse.json({ error: 'Ошибка сервера: ' + String(e) }, { status: 500 })
     }
 }
