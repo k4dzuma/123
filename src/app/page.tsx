@@ -150,7 +150,7 @@ function Features() {
 
           {/* Card 1: Diagnostic Shuffler */}
           <div className="feature-card group flex flex-col gap-8">
-            <div className="relative h-80 bg-secondary rounded-[3rem] p-10 overflow-hidden border border-white/5 flex items-center justify-center">
+            <div className="relative h-80 bg-secondary/60 rounded-[3rem] p-10 overflow-hidden border border-white/15 shadow-[0_0_40px_rgba(var(--primary-rgb),0.08)] flex items-center justify-center">
               <DiagnosticShuffler />
             </div>
             <div className="space-y-4">
@@ -161,27 +161,23 @@ function Features() {
             </div>
           </div>
 
-          {/* Card 2: Telemetry Typewriter */}
+          {/* Card 2: Artifact Scanner */}
           <div className="feature-card group flex flex-col gap-8 lg:mt-24">
-            <div className="relative h-80 bg-secondary rounded-[3rem] p-10 overflow-hidden border border-white/5 font-mono text-[10px]">
-              <div className="flex items-center gap-2 mb-6">
-                <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-                <span className="text-primary/60 uppercase tracking-widest">Поток метаданных</span>
-              </div>
-              <TelemetryTypewriter />
+            <div className="relative h-80 bg-secondary/60 rounded-[3rem] p-10 overflow-hidden border border-white/15 shadow-[0_0_40px_rgba(var(--primary-rgb),0.08)] font-mono">
+              <ArtifactScanner />
             </div>
             <div className="space-y-4">
               <h3 className="text-2xl font-bold uppercase tracking-tight">Интерактив</h3>
               <p className="text-sm text-foreground/50 font-light leading-relaxed">
-                Почувствуйте пульс истории через живую телеметрию и аутентичные архивные данные.
+                Исследуйте экспонаты в дополненной реальности — каждый артефакт хранит живую историю.
               </p>
             </div>
           </div>
 
-          {/* Card 3: Cursor Protocol Scheduler */}
+          {/* Card 3: Quest Progress */}
           <div className="feature-card group flex flex-col gap-8 lg:mt-48">
-            <div className="relative h-80 bg-secondary rounded-[3rem] p-10 overflow-hidden border border-white/5">
-              <ProtocolScheduler />
+            <div className="relative h-80 bg-secondary/60 rounded-[3rem] p-10 overflow-hidden border border-white/15 shadow-[0_0_40px_rgba(var(--primary-rgb),0.08)]">
+              <QuestProgress />
             </div>
             <div className="space-y-4">
               <h3 className="text-2xl font-bold uppercase tracking-tight">Квесты</h3>
@@ -224,17 +220,194 @@ function DiagnosticShuffler() {
           layout
           initial={false}
           animate={{
-            y: idx * 40 - 40,
-            opacity: idx === 1 ? 1 : 0.4,
-            scale: idx === 1 ? 1 : 0.85,
+            y: idx * 52 - 52,
+            opacity: idx === 1 ? 1 : 0.5,
+            scale: idx === 1 ? 1.05 : 0.88,
             zIndex: idx === 1 ? 10 : 0
           }}
           transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-          className={`absolute px-8 py-4 rounded-full border border-white/10 bg-background/80 backdrop-blur-md uppercase text-[10px] tracking-[0.3em] font-bold ${idx === 1 ? 'text-primary' : 'text-foreground/40'}`}
+          className={`absolute px-8 py-4 rounded-full border uppercase text-[11px] tracking-[0.3em] font-bold ${idx === 1
+            ? 'bg-primary/20 border-primary/60 text-primary shadow-[0_0_20px_rgba(var(--primary-rgb),0.3)]'
+            : 'bg-white/5 border-white/10 text-foreground/60'
+            }`}
         >
           {item.label}
         </motion.div>
       ))}
+    </div>
+  )
+}
+
+function ArtifactScanner() {
+  const SCAN_MS = 2400
+  const PAUSE_MS = 1000
+  const TICK_MS = 30
+  const TOTAL_TICKS = SCAN_MS / TICK_MS
+
+  const [scanY, setScanY] = useState(0)
+  const [revealed, setRevealed] = useState(0)
+  const [visible, setVisible] = useState(true)
+
+  const fields = [
+    { label: 'ОБЪЕКТ', value: 'Печатная машинка «Ятрань»' },
+    { label: 'ПЕРИОД', value: '1975 — 1990 гг.' },
+    { label: 'СТАТУС', value: 'ЭКСПОНИРУЕТСЯ' },
+    { label: 'ФОНД', value: 'КТТ-архив' },
+  ]
+
+  useEffect(() => {
+    let tick = 0
+    let pausing = false
+    const interval = setInterval(() => {
+      if (pausing) return
+      tick++
+      const newY = Math.min(100, (tick / TOTAL_TICKS) * 100)
+      setScanY(newY)
+      setRevealed(Math.min(fields.length, Math.floor((tick / TOTAL_TICKS) * (fields.length + 0.5))))
+      if (tick >= TOTAL_TICKS) {
+        pausing = true
+        setVisible(false)
+        setTimeout(() => {
+          tick = 0
+          setScanY(0)
+          setRevealed(0)
+          setVisible(true)
+          pausing = false
+        }, PAUSE_MS)
+      }
+    }, TICK_MS)
+    return () => clearInterval(interval)
+  }, [])
+  return (
+    <div className="w-full h-full flex flex-col gap-3 relative overflow-hidden">
+      {/* Typewriter silhouette + scan line */}
+      <div className="relative flex items-center justify-center" style={{ height: 96 }}>
+        <svg viewBox="0 0 140 80" className="w-44 h-24 text-white/30" fill="none">
+          {/* Paper */}
+          <rect x="50" y="2" width="40" height="22" rx="2" stroke="currentColor" strokeWidth="1" fill="hsl(var(--primary)/0.06)" />
+          <line x1="56" y1="9" x2="84" y2="9" stroke="currentColor" strokeWidth="0.5" strokeDasharray="3 2" />
+          <line x1="56" y1="14" x2="84" y2="14" stroke="currentColor" strokeWidth="0.5" strokeDasharray="3 2" />
+          <line x1="56" y1="19" x2="76" y2="19" stroke="currentColor" strokeWidth="0.5" strokeDasharray="3 2" />
+          {/* Platen roller */}
+          <rect x="30" y="22" width="80" height="8" rx="4" stroke="currentColor" strokeWidth="1.5" />
+          {/* Body */}
+          <rect x="15" y="30" width="110" height="30" rx="5" stroke="currentColor" strokeWidth="1.5" />
+          {/* Keys row 1 */}
+          <rect x="22" y="36" width="7" height="5" rx="1.5" stroke="currentColor" strokeWidth="0.8" />
+          <rect x="33" y="36" width="7" height="5" rx="1.5" stroke="currentColor" strokeWidth="0.8" />
+          <rect x="44" y="36" width="7" height="5" rx="1.5" stroke="currentColor" strokeWidth="0.8" />
+          <rect x="55" y="36" width="7" height="5" rx="1.5" stroke="currentColor" strokeWidth="0.8" />
+          <rect x="66" y="36" width="7" height="5" rx="1.5" stroke="currentColor" strokeWidth="0.8" />
+          <rect x="77" y="36" width="7" height="5" rx="1.5" stroke="currentColor" strokeWidth="0.8" />
+          <rect x="88" y="36" width="7" height="5" rx="1.5" stroke="currentColor" strokeWidth="0.8" />
+          <rect x="99" y="36" width="7" height="5" rx="1.5" stroke="currentColor" strokeWidth="0.8" />
+          <rect x="110" y="36" width="7" height="5" rx="1.5" stroke="currentColor" strokeWidth="0.8" />
+          {/* Keys row 2 */}
+          <rect x="27" y="45" width="7" height="5" rx="1.5" stroke="currentColor" strokeWidth="0.8" />
+          <rect x="38" y="45" width="7" height="5" rx="1.5" stroke="currentColor" strokeWidth="0.8" />
+          {/* Spacebar */}
+          <rect x="49" y="45" width="44" height="5" rx="2" stroke="currentColor" strokeWidth="0.8" />
+          <rect x="97" y="45" width="7" height="5" rx="1.5" stroke="currentColor" strokeWidth="0.8" />
+          <rect x="108" y="45" width="7" height="5" rx="1.5" stroke="currentColor" strokeWidth="0.8" />
+          {/* Feet */}
+          <rect x="25" y="60" width="18" height="5" rx="2.5" stroke="currentColor" strokeWidth="1" />
+          <rect x="97" y="60" width="18" height="5" rx="2.5" stroke="currentColor" strokeWidth="1" />
+          {/* Spacebar highlight */}
+          <line x1="52" y1="47.5" x2="90" y2="47.5" stroke="hsl(var(--primary)/0.5)" strokeWidth="1.5" />
+        </svg>
+
+        {/* Laser scan line — only within the SVG area, positioned absolutely inside the container */}
+        <div
+          className="absolute left-6 right-6 h-[2px] pointer-events-none rounded-full"
+          style={{
+            top: `${scanY}%`,
+            background: 'linear-gradient(90deg, transparent 5%, hsl(var(--primary)) 35%, hsl(var(--primary)) 65%, transparent 95%)',
+            boxShadow: '0 0 10px 3px hsl(var(--primary) / 0.6)',
+            opacity: visible ? 1 : 0,
+            transition: 'opacity 0.2s',
+          }}
+        />
+      </div>
+
+      {/* Data fields */}
+      <div className="space-y-1.5 mt-1">
+        {fields.map((f, i) => (
+          <motion.div
+            key={f.label}
+            animate={{ opacity: i < revealed ? 1 : 0, x: i < revealed ? 0 : -10 }}
+            transition={{ duration: 0.25, ease: 'easeOut' }}
+            className="flex gap-3 items-baseline"
+          >
+            <span className="text-[9px] font-mono text-primary/60 tracking-[0.2em] w-20 shrink-0">{f.label}</span>
+            <span className="text-[11px] font-mono text-white/90 tracking-wide">{f.value}</span>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function QuestProgress() {
+  const achievements = [
+    { icon: '🏛️', label: 'Историк', xp: 150 },
+    { icon: '🔍', label: 'Следопыт', xp: 300 },
+    { icon: '📜', label: 'Архивист', xp: 500 },
+  ]
+  const [unlockedIdx, setUnlockedIdx] = useState(0)
+  const [displayXp, setDisplayXp] = useState(0)
+  const targetXp = achievements[Math.min(unlockedIdx, achievements.length - 1)].xp
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setUnlockedIdx(prev => (prev + 1) % (achievements.length + 1))
+    }, 3000)
+    return () => clearInterval(interval)
+  }, [])
+  useEffect(() => {
+    const target = achievements[Math.min(unlockedIdx, achievements.length - 1)].xp
+    let current = 0
+    const step = target / 40
+    const timer = setInterval(() => {
+      current += step
+      if (current >= target) { setDisplayXp(target); clearInterval(timer) }
+      else setDisplayXp(Math.floor(current))
+    }, 40)
+    return () => clearInterval(timer)
+  }, [unlockedIdx])
+  return (
+    <div className="w-full h-full flex flex-col items-center justify-center gap-5">
+      <div className="text-center">
+        <p className="text-[9px] font-mono text-primary/60 tracking-[0.4em] uppercase mb-1">Очки опыта</p>
+        <p className="text-4xl font-black font-sans tracking-tighter text-white">
+          {displayXp.toLocaleString()}<span className="text-primary text-xl ml-1">XP</span>
+        </p>
+      </div>
+      <div className="w-full h-3 bg-white/10 rounded-full overflow-hidden border border-white/5">
+        <div
+          className="h-full rounded-full"
+          style={{
+            width: `${Math.max(2, (displayXp / targetXp) * 100)}%`,
+            background: 'linear-gradient(90deg, hsl(var(--primary)/0.8), hsl(var(--primary)))',
+            boxShadow: '0 0 12px 2px hsl(var(--primary) / 0.7)',
+            transition: 'width 0.08s linear',
+          }}
+        />
+      </div>
+      <div className="flex gap-4">
+        {achievements.map((a, i) => (
+          <motion.div
+            key={a.label}
+            animate={{ scale: i <= unlockedIdx ? 1 : 0.8, opacity: i <= unlockedIdx ? 1 : 0.25 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+            className={`flex flex-col items-center gap-1.5 p-3 rounded-2xl border transition-colors ${i <= unlockedIdx
+              ? 'border-primary/40 bg-primary/10 shadow-[0_0_12px_rgba(var(--primary-rgb),0.15)]'
+              : 'border-white/5 bg-white/5'
+              }`}
+          >
+            <span className="text-xl">{a.icon}</span>
+            <span className="text-[8px] font-mono text-white/60 tracking-widest uppercase">{a.label}</span>
+          </motion.div>
+        ))}
+      </div>
     </div>
   )
 }
@@ -270,10 +443,11 @@ function TelemetryTypewriter() {
   }, [charIdx, msgIdx])
 
   return (
-    <div className="space-y-1">
-      <div className="text-foreground/80 leading-loose">
+    <div className="space-y-2">
+      <div className="text-white text-[11px] leading-loose tracking-wide font-mono">
+        <span className="text-primary/70">&gt;&gt; </span>
         {text}
-        <span className="inline-block w-1.5 h-3 bg-primary ml-1 animate-pulse" />
+        <span className="inline-block w-[2px] h-4 bg-primary ml-1 animate-pulse shadow-[0_0_8px_rgba(var(--primary-rgb),0.8)]" />
       </div>
     </div>
   )
@@ -299,24 +473,27 @@ function ProtocolScheduler() {
   }, [])
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center gap-6 relative">
-      <div className="grid grid-cols-7 gap-4">
+    <div className="w-full h-full flex flex-col items-center justify-center gap-8 relative">
+      <div className="grid grid-cols-7 gap-3">
         {days.map((day, idx) => (
           <div
             key={idx}
-            className={`w-8 h-8 rounded-full border border-white/5 flex items-center justify-center text-[8px] font-bold transition-luxury ${activeDay === idx ? 'bg-primary text-primary-foreground border-primary scale-110 shadow-lg shadow-primary/30' : 'bg-secondary text-foreground/40'}`}
+            className={`w-10 h-10 rounded-full border flex items-center justify-center text-[10px] font-black transition-all duration-300 ${activeDay === idx
+              ? 'bg-primary text-primary-foreground border-primary scale-125 shadow-[0_0_16px_rgba(var(--primary-rgb),0.6)]'
+              : 'bg-white/5 border-white/10 text-white/50'
+              }`}
           >
             {day}
           </div>
         ))}
       </div>
-      <div className="bg-primary/20 border border-primary/40 px-6 py-2 rounded-full text-[8px] uppercase tracking-widest font-bold text-primary">
+      <div className="bg-primary/20 border border-primary/50 px-8 py-2.5 rounded-full text-[10px] uppercase tracking-widest font-bold text-primary shadow-[0_0_12px_rgba(var(--primary-rgb),0.2)]">
         Сохранить протокол
       </div>
       {/* Animated Cursor */}
       <div ref={cursorRef} className="absolute top-1/2 left-1/4 pointer-events-none z-20">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" className="text-white drop-shadow-md">
-          <path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z" fill="currentColor" />
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-white drop-shadow-[0_0_6px_rgba(255,255,255,0.8)]">
+          <path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z" fill="currentColor" stroke="rgba(255,255,255,0.4)" strokeWidth="1" />
         </svg>
       </div>
     </div>
@@ -377,36 +554,9 @@ function Philosophy() {
 /* ─── E. PROTOCOL: STICKY STACKING ARCHIVE ─── */
 function Protocol() {
   const containerRef = useRef<HTMLDivElement>(null)
-  const sectionRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      const cards = gsap.utils.toArray('.stack-card')
-      cards.forEach((card: any, i: number) => {
-        // Set initial z-index so cards don't overlap randomly
-        gsap.set(card, { zIndex: 10 + i })
-
-        if (i === cards.length - 1) return
-
-        gsap.to(card, {
-          scrollTrigger: {
-            trigger: card,
-            start: "top top",
-            pin: true,
-            pinSpacing: false,
-            scrub: true,
-            invalidateOnRefresh: true,
-            anticipatePin: 1,
-          },
-          scale: 0.9,
-          opacity: 0.5,
-          filter: "blur(20px)",
-          ease: "none"
-        })
-      })
-    }, sectionRef)
-    return () => ctx.revert()
-  }, [])
+  const [activeIdx, setActiveIdx] = useState(0)
+  const [prevIdx, setPrevIdx] = useState<number | null>(null)
+  const [isVisible, setIsVisible] = useState(false)
 
   const steps = [
     { title: 'Архив', desc: 'Сканирование десятилетий истории через цифровые линзы времени.', icon: <Terminal size={40} /> },
@@ -414,33 +564,154 @@ function Protocol() {
     { title: 'Наследие', desc: 'Ваш вклад в общую копилку истории колледжа и текстильного края.', icon: <Layers size={40} /> },
   ]
 
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const wheelThrottle = useRef(false)
+  const atStart = activeIdx === 0
+  const atEnd = activeIdx === steps.length - 1
+
+  // Detect visibility
+  useEffect(() => {
+    if (!containerRef.current) return
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsVisible(entry.isIntersecting),
+      { threshold: 0.4 }
+    )
+    observer.observe(containerRef.current)
+    return () => observer.disconnect()
+  }, [])
+
+  // Helper: go to a specific card and reset timer
+  const goTo = (idx: number) => {
+    if (idx < 0 || idx >= steps.length) return
+    setPrevIdx(activeIdx)
+    setActiveIdx(idx)
+  }
+
+  // Auto-advance every 3.5s while visible — restart on manual change
+  useEffect(() => {
+    if (!isVisible) return
+    if (timerRef.current) clearInterval(timerRef.current)
+    timerRef.current = setInterval(() => {
+      setActiveIdx(prev => {
+        const next = (prev + 1) % steps.length
+        setPrevIdx(prev)
+        return next
+      })
+    }, 3500)
+    return () => { if (timerRef.current) clearInterval(timerRef.current) }
+  }, [isVisible, activeIdx])
+
+  // Intercept wheel scroll while section is visible
+  useEffect(() => {
+    const el = containerRef.current
+    if (!el) return
+
+    const onWheel = (e: WheelEvent) => {
+      if (!isVisible) return
+
+      // Allow normal scroll when at boundaries (first/last card)
+      if (e.deltaY > 0 && atEnd) return      // last card → let page scroll down
+      if (e.deltaY < 0 && atStart) return    // first card → let page scroll up
+
+      // Otherwise capture the scroll
+      e.preventDefault()
+      if (wheelThrottle.current) return
+      wheelThrottle.current = true
+      setTimeout(() => { wheelThrottle.current = false }, 700)
+
+      if (e.deltaY > 0) {
+        goTo(activeIdx + 1)
+      } else {
+        goTo(activeIdx - 1)
+      }
+    }
+
+    el.addEventListener('wheel', onWheel, { passive: false })
+    return () => el.removeEventListener('wheel', onWheel)
+  }, [isVisible, activeIdx, atStart, atEnd])
+
   return (
-    <section ref={sectionRef} className="relative bg-transparent">
-      {steps.map((step, idx) => (
-        <div
-          key={idx}
-          className="stack-card h-screen w-full flex items-center justify-center px-8 lg:px-16"
-        >
-          <div className="w-full max-w-6xl h-[60vh] bg-secondary rounded-[3rem] border border-white/5 p-16 md:p-24 flex flex-col md:flex-row gap-16 items-center shadow-2xl relative overflow-hidden group">
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-1000 bg-primary/20 pointer-events-none" />
+    <section ref={containerRef} className="relative py-24 px-6 md:px-16 min-h-[70vh] flex items-center justify-center">
+      {/* Dots indicator */}
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-3 z-20">
+        {steps.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => { setPrevIdx(activeIdx); setActiveIdx(i) }}
+            className="transition-all duration-300"
+          >
+            <div className={`rounded-full transition-all duration-500 ${i === activeIdx
+              ? 'w-8 h-2 bg-primary shadow-[0_0_8px_rgba(var(--primary-rgb),0.8)]'
+              : 'w-2 h-2 bg-white/20 hover:bg-white/40'
+              }`} />
+          </button>
+        ))}
+      </div>
 
-            <div className="w-full md:w-1/2 space-y-8">
-              <span className="font-mono text-xs text-primary/60 tracking-[0.5em] uppercase">Этап 0{idx + 1}</span>
-              <h3 className="text-4xl md:text-7xl font-sans font-black uppercase tracking-tighter leading-none">{step.title}</h3>
-              <p className="text-foreground/40 text-lg font-light leading-relaxed max-w-sm">{step.desc}</p>
-            </div>
+      {/* Cards stack */}
+      <div className="relative w-full max-w-5xl h-[60vh]" style={{ perspective: '1200px' }}>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeIdx}
+            initial={{ opacity: 0, scale: 0.96, y: 24, rotateX: 3 }}
+            animate={{ opacity: 1, scale: 1, y: 0, rotateX: 0 }}
+            exit={{ opacity: 0, scale: 0.94, y: -16, rotateX: -3, filter: 'blur(6px)' }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="absolute inset-0 w-full h-full"
+            style={{ transformOrigin: 'center center' }}
+          >
+            <div className="w-full h-full bg-secondary/95 backdrop-blur-3xl rounded-[3rem] border border-white/10 p-10 md:p-16 flex flex-col md:flex-row gap-10 items-center shadow-[0_0_60px_rgba(0,0,0,0.6)] relative overflow-hidden">
+              {/* Active glow */}
+              <div className="absolute inset-0 rounded-[3rem] pointer-events-none" style={{ boxShadow: 'inset 0 0 80px rgba(var(--primary-rgb),0.05)' }} />
 
-            <div className="w-full md:w-1/2 flex items-center justify-center">
-              <div className="w-64 h-64 border border-white/10 rounded-full flex items-center justify-center relative">
-                <div className="w-48 h-48 border border-primary/20 rounded-full animate-spin [animation-duration:20s]" />
-                <div className="absolute text-primary">
-                  {step.icon}
-                </div>
+              <div className="w-full md:w-1/2 space-y-6">
+                <motion.span
+                  key={`label-${activeIdx}`}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.15, duration: 0.4 }}
+                  className="font-mono text-[10px] text-primary/60 tracking-[0.5em] uppercase block"
+                >
+                  Этап 0{activeIdx + 1}
+                </motion.span>
+                <motion.h3
+                  key={`title-${activeIdx}`}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                  className="text-4xl md:text-6xl font-sans font-black uppercase tracking-tighter leading-none"
+                >
+                  {steps[activeIdx].title}
+                </motion.h3>
+                <motion.p
+                  key={`desc-${activeIdx}`}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3, duration: 0.5 }}
+                  className="text-foreground/40 text-sm font-light leading-relaxed max-w-sm"
+                >
+                  {steps[activeIdx].desc}
+                </motion.p>
+              </div>
+
+              <div className="w-full md:w-1/2 flex items-center justify-center">
+                <motion.div
+                  key={`icon-${activeIdx}`}
+                  initial={{ opacity: 0, scale: 0.85, rotate: -8 }}
+                  animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                  transition={{ delay: 0.2, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                  className="w-40 h-40 md:w-48 md:h-48 border border-white/10 rounded-full flex items-center justify-center relative"
+                >
+                  <div className="w-32 h-32 md:w-40 md:h-40 border border-primary/20 rounded-full animate-spin [animation-duration:25s]" />
+                  <div className="absolute text-primary">
+                    {steps[activeIdx].icon}
+                  </div>
+                </motion.div>
               </div>
             </div>
-          </div>
-        </div>
-      ))}
+          </motion.div>
+        </AnimatePresence>
+      </div>
     </section>
   )
 }
