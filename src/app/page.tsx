@@ -391,16 +391,21 @@ function Protocol() {
           pin: true,
           pinSpacing: false,
           scrub: true,
+          invalidateOnRefresh: true,
           onUpdate: (self) => {
             const progress = self.progress
             gsap.set(card, {
               scale: 1 - progress * 0.1,
               opacity: 1 - progress * 0.5,
-              filter: `blur(${progress * 20}px)`
+              filter: `blur(${progress * 20}px)`,
+              zIndex: 10 + i
             })
           }
         })
       })
+
+      // Force refresh after a short delay for hydration safety
+      setTimeout(() => ScrollTrigger.refresh(), 500)
     }, sectionRef)
     return () => ctx.revert()
   }, [])
