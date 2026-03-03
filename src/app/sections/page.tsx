@@ -7,6 +7,7 @@ import { Footer } from '@/components/layout/footer'
 import { motion } from 'framer-motion'
 import { useTheme } from '@/components/theme/theme-provider'
 import { LayoutGrid, ChevronRight, Loader2 } from 'lucide-react'
+import { TextReveal } from '@/components/ui/text-reveal'
 
 interface Section {
   id: number
@@ -53,7 +54,7 @@ export default function SectionsPage() {
               </span>
             </div>
             <h1 className="text-5xl md:text-7xl font-sans font-black tracking-tighter uppercase mb-6 text-white drop-shadow-2xl">
-              Наши <span className="font-serif italic text-primary lowercase tracking-normal">Коллекции.</span>
+              <TextReveal>Наши</TextReveal> <TextReveal className="font-serif italic text-primary lowercase tracking-normal" delay={0.2}>Коллекции.</TextReveal>
             </h1>
             <p className="text-lg max-w-2xl mx-auto font-light tracking-wide text-foreground/50">
               Глубокое погружение в десятилетия истории колледжа через интерактивные имерсивные разделы.

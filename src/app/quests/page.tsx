@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useTheme } from '@/components/theme/theme-provider'
 import { Gamepad2, Clock, Zap, ChevronRight, Loader2, Trophy, Star, Users, Award, Crown } from 'lucide-react'
 import { SpotlightCard } from '@/components/ui/spotlight-card'
+import { TextReveal } from '@/components/ui/text-reveal'
 
 interface Quest {
   id: number
@@ -89,7 +90,7 @@ export default function QuestsPage() {
             className="text-center mb-16"
           >
             <h1 className="text-5xl md:text-7xl font-sans font-black tracking-tighter uppercase mb-6 text-white drop-shadow-2xl">
-              Испытания <span className="font-serif italic text-primary lowercase tracking-normal">Памяти.</span>
+              <TextReveal>Испытания</TextReveal> <TextReveal className="font-serif italic text-primary lowercase tracking-normal" delay={0.2}>Памяти.</TextReveal>
             </h1>
             <p className="text-lg md:text-xl max-w-2xl mx-auto font-light tracking-wide mb-12 text-foreground/50">
               Проверьте знания, соревнуйтесь и пополняйте свою коллекцию цифровых достижений.
