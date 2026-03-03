@@ -1,51 +1,63 @@
-export function Skeleton({ className = '', ...props }: React.HTMLAttributes<HTMLDivElement>) {
+'use client'
+
+import { motion, HTMLMotionProps } from 'framer-motion'
+import { cn } from '@/lib/utils'
+
+export function Skeleton({ className, ...props }: HTMLMotionProps<"div">) {
     return (
-        <div
-            className={`animate-pulse rounded-xl bg-white/10 ${className}`}
+        <motion.div
+            initial={{ opacity: 0.3 }}
+            animate={{ opacity: [0.3, 0.5, 0.3] }}
+            transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut"
+            }}
+            className={cn(
+                "relative overflow-hidden rounded-3xl bg-white/5 backdrop-blur-md border border-white/5",
+                "before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-white/5 before:to-transparent",
+                className
+            )}
             {...props}
         />
     )
 }
 
-export function CardSkeleton() {
+export function QuestCardSkeleton() {
     return (
-        <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-6">
-            <Skeleton className="h-6 w-3/4 mb-4" />
-            <Skeleton className="h-4 w-full mb-2" />
-            <Skeleton className="h-4 w-2/3 mb-4" />
-            <Skeleton className="h-10 w-full" />
-        </div>
-    )
-}
-
-export function TableRowSkeleton() {
-    return (
-        <div className="flex items-center gap-4 p-4">
-            <Skeleton className="w-10 h-10 rounded-full" />
-            <div className="flex-1">
-                <Skeleton className="h-4 w-1/3 mb-2" />
-                <Skeleton className="h-3 w-1/2" />
+        <div className="rounded-[2.5rem] border border-white/10 p-8 md:p-10 h-full flex flex-col bg-secondary/40 backdrop-blur-xl shadow-2xl">
+            <div className="flex items-start justify-between mb-8">
+                <Skeleton className="w-16 h-16 rounded-2xl" />
+                <Skeleton className="w-24 h-6 rounded-full" />
             </div>
-            <Skeleton className="h-6 w-16" />
-        </div>
-    )
-}
-
-export function ProfileSkeleton() {
-    return (
-        <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-8">
-            <div className="flex items-center gap-6 mb-8">
-                <Skeleton className="w-24 h-24 rounded-2xl" />
-                <div className="flex-1">
-                    <Skeleton className="h-8 w-48 mb-2" />
-                    <Skeleton className="h-4 w-32 mb-2" />
-                    <Skeleton className="h-6 w-24" />
+            <Skeleton className="w-3/4 h-8 mb-4" />
+            <Skeleton className="w-full h-4 mb-2" />
+            <Skeleton className="w-5/6 h-4 mb-8" />
+            <div className="space-y-3 mb-5">
+                <div className="flex gap-4">
+                    <Skeleton className="w-20 h-4" />
+                    <Skeleton className="w-20 h-4" />
+                </div>
+                <div className="flex gap-4">
+                    <Skeleton className="w-24 h-4" />
+                    <Skeleton className="w-24 h-4" />
                 </div>
             </div>
-            <div className="grid grid-cols-3 gap-4">
-                <Skeleton className="h-20 rounded-xl" />
-                <Skeleton className="h-20 rounded-xl" />
-                <Skeleton className="h-20 rounded-xl" />
+            <Skeleton className="w-full h-14 mt-8 rounded-full" />
+        </div>
+    )
+}
+
+export function SectionCardSkeleton() {
+    return (
+        <div className="rounded-[2.5rem] overflow-hidden border border-white/5 bg-secondary/40 backdrop-blur-xl shadow-2xl h-full">
+            <Skeleton className="h-64 w-full rounded-none" />
+            <div className="p-8 space-y-4">
+                <Skeleton className="w-2/3 h-8" />
+                <Skeleton className="w-full h-4" />
+                <Skeleton className="w-full h-4" />
+                <Skeleton className="w-1/2 h-4" />
+                <Skeleton className="w-24 h-4 mt-4" />
             </div>
         </div>
     )

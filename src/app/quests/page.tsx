@@ -9,6 +9,7 @@ import { useTheme } from '@/components/theme/theme-provider'
 import { Gamepad2, Clock, Zap, ChevronRight, Loader2, Trophy, Star, Users, Award, Crown } from 'lucide-react'
 import { SpotlightCard } from '@/components/ui/spotlight-card'
 import { TextReveal } from '@/components/ui/text-reveal'
+import { QuestCardSkeleton } from '@/components/ui/skeleton'
 
 interface Quest {
   id: number
@@ -73,9 +74,22 @@ export default function QuestsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-transparent">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
-      </div>
+      <main className="min-h-[100svh] relative pt-40 pb-32 overflow-hidden bg-transparent">
+        <div className="container mx-auto px-8 lg:px-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[...Array(6)].map((_, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+              >
+                <QuestCardSkeleton />
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </main>
     )
   }
 
