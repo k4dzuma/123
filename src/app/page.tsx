@@ -383,29 +383,27 @@ function Protocol() {
     const ctx = gsap.context(() => {
       const cards = gsap.utils.toArray('.stack-card')
       cards.forEach((card: any, i: number) => {
+        // Set initial z-index so cards don't overlap randomly
+        gsap.set(card, { zIndex: 10 + i })
+
         if (i === cards.length - 1) return
 
-        ScrollTrigger.create({
-          trigger: card,
-          start: "top top",
-          pin: true,
-          pinSpacing: false,
-          scrub: true,
-          invalidateOnRefresh: true,
-          onUpdate: (self) => {
-            const progress = self.progress
-            gsap.set(card, {
-              scale: 1 - progress * 0.1,
-              opacity: 1 - progress * 0.5,
-              filter: `blur(${progress * 20}px)`,
-              zIndex: 10 + i
-            })
-          }
+        gsap.to(card, {
+          scrollTrigger: {
+            trigger: card,
+            start: "top top",
+            pin: true,
+            pinSpacing: false,
+            scrub: true,
+            invalidateOnRefresh: true,
+            anticipatePin: 1,
+          },
+          scale: 0.9,
+          opacity: 0.5,
+          filter: "blur(20px)",
+          ease: "none"
         })
       })
-
-      // Force refresh after a short delay for hydration safety
-      setTimeout(() => ScrollTrigger.refresh(), 500)
     }, sectionRef)
     return () => ctx.revert()
   }, [])

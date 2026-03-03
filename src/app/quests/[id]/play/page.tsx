@@ -156,24 +156,24 @@ export default function QuestPlayPage() {
         return (
             <>
                 <QuestVictoryConfetti />
-                <div className="min-h-screen flex items-center justify-center bg-transparent py-20 overflow-hidden">
+                <div className="min-h-screen flex items-center justify-center bg-transparent py-10 overflow-hidden">
                     <motion.div
                         initial={{ scale: 0.8, opacity: 0, filter: 'blur(20px)' }}
                         animate={{ scale: 1, opacity: 1, filter: 'blur(0px)' }}
                         transition={{ type: 'spring', stiffness: 50, damping: 20 }}
-                        className="text-center p-10 md:p-14 bg-secondary/40 backdrop-blur-3xl rounded-[4rem] border border-white/10 shadow-[0_0_100px_rgba(var(--primary-rgb),0.1)] max-w-lg w-full mx-4 relative"
+                        className="text-center p-8 md:p-12 bg-secondary/40 backdrop-blur-3xl rounded-[3rem] border border-white/10 shadow-[0_0_100px_rgba(var(--primary-rgb),0.1)] max-w-md w-full mx-4 relative"
                     >
                         <motion.div
                             initial={{ y: 20, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ delay: 0.5 }}
-                            className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-8 border border-primary/20 shadow-3xl shadow-primary/20 relative"
+                            className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-primary/20 shadow-3xl shadow-primary/20 relative"
                         >
-                            <Trophy className="w-12 h-12 text-primary z-10" />
+                            <Trophy className="w-10 h-10 text-primary z-10" />
                             <div className="absolute inset-0 bg-primary blur-3xl opacity-20 animate-pulse" />
                         </motion.div>
 
-                        <h1 className="text-4xl md:text-5xl font-sans font-black tracking-tighter uppercase text-white mb-4 leading-none">
+                        <h1 className="text-3xl md:text-4xl font-sans font-black tracking-tighter uppercase text-white mb-2 leading-none">
                             <motion.span
                                 initial={{ opacity: 0, y: 30 }}
                                 animate={{ opacity: 1, y: 0 }}
@@ -188,7 +188,7 @@ export default function QuestPlayPage() {
                             >выполнена.</motion.span>
                         </h1>
 
-                        <p className="text-lg md:text-xl text-foreground/40 font-light tracking-wide mb-8 leading-relaxed max-w-md mx-auto">
+                        <p className="text-base text-foreground/40 font-light tracking-wide mb-6 leading-relaxed max-w-xs mx-auto">
                             Вы успешно завершили исследование цифровых архивов.
                         </p>
 
@@ -196,11 +196,11 @@ export default function QuestPlayPage() {
                             initial={{ scale: 0.9, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
                             transition={{ delay: 1.2 }}
-                            className="bg-white/5 rounded-3xl border border-white/5 p-8 mb-10 group transition-all duration-700 hover:bg-white/10 hover:border-primary/20 cursor-default"
+                            className="bg-white/5 rounded-3xl border border-white/5 p-6 mb-8 group transition-all duration-700 hover:bg-white/10 hover:border-primary/20 cursor-default"
                         >
-                            <p className="text-foreground/40 text-[10px] font-black tracking-[0.4em] uppercase mb-4">Результат исследования</p>
+                            <p className="text-foreground/40 text-[10px] font-black tracking-[0.4em] uppercase mb-2">Результат</p>
                             <div className="relative inline-block">
-                                <p className="text-6xl md:text-7xl font-sans font-black tracking-tighter text-white relative z-10">
+                                <p className="text-5xl md:text-6xl font-sans font-black tracking-tighter text-white relative z-10">
                                     {score}
                                 </p>
                                 <div className="absolute inset-0 bg-primary blur-3xl opacity-10 group-hover:opacity-30 transition-opacity" />
@@ -211,15 +211,15 @@ export default function QuestPlayPage() {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ delay: 1.5 }}
-                            className="flex flex-col sm:flex-row gap-4 justify-center"
+                            className="flex flex-col sm:flex-row gap-3 justify-center"
                         >
                             <Link href="/quests" className="flex-1">
-                                <button className="w-full px-8 py-4 rounded-full bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-luxury uppercase font-black tracking-widest text-[10px] magnetic-btn">
-                                    К архивам
+                                <button className="w-full px-6 py-4 rounded-full bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-luxury uppercase font-black tracking-widest text-[10px] magnetic-btn">
+                                    Архивы
                                 </button>
                             </Link>
                             <Link href="/leaderboard" className="flex-1">
-                                <button className="w-full px-8 py-4 rounded-full bg-primary text-white hover:bg-white hover:text-black transition-luxury uppercase font-black tracking-widest text-[10px] shadow-2xl shadow-primary/20 magnetic-btn">
+                                <button className="w-full px-6 py-4 rounded-full bg-primary text-white hover:bg-white hover:text-black transition-luxury uppercase font-black tracking-widest text-[10px] shadow-2xl shadow-primary/20 active:scale-95 transition-all">
                                     Лидеры
                                 </button>
                             </Link>
