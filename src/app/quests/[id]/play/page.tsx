@@ -8,9 +8,6 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useTheme } from '@/components/theme/theme-provider'
 import { ArrowLeft, Send, Lightbulb, Trophy, Loader2, CheckCircle2, XCircle, AlertTriangle, Star, Target } from 'lucide-react'
 import Link from 'next/link'
-import { Suspense } from 'react'
-import { Canvas } from '@react-three/fiber'
-import { AncientCoin } from '@/components/3d/ancient-coin'
 
 interface Step {
     id: number
@@ -235,27 +232,33 @@ export default function QuestPlayPage() {
                             className="rounded-[3rem] border border-white/10 p-10 md:p-16 bg-secondary/40 backdrop-blur-xl shadow-3xl"
                         >
                             <div className="mb-12">
-                                <div className="flex flex-col md:flex-row gap-12 items-center mb-12">
-                                    <div className="flex-1">
-                                        <h3 className="text-4xl font-sans font-black tracking-tighter uppercase text-white mb-6">
+                                <div className="flex flex-col md:flex-row gap-12 items-start mb-12">
+                                    <div className="flex-1 order-2 md:order-1">
+                                        <h3 className="text-3xl md:text-4xl font-sans font-black tracking-tighter uppercase text-white mb-6">
                                             {currentStep.title}
                                         </h3>
-                                        <p className="text-xl font-light tracking-wide text-white/60 leading-relaxed italic border-l-2 border-primary/20 pl-8">
+                                        <p className="text-lg md:text-xl font-light tracking-wide text-white/60 leading-relaxed italic border-l-2 border-primary/20 pl-8">
                                             {currentStep.description}
                                         </p>
                                     </div>
 
-                                    {/* 3D Artifact Side View */}
-                                    <div className="w-64 h-64 md:w-80 md:h-80 relative flex-shrink-0">
-                                        <div className="absolute inset-0 bg-primary/5 rounded-full blur-3xl opacity-20" />
-                                        <Canvas camera={{ position: [0, 0, 10], fov: 45 }}>
-                                            <ambientLight intensity={0.5} />
-                                            <pointLight position={[10, 10, 10]} intensity={1} />
-                                            <spotLight position={[-10, 10, 10]} angle={0.15} penumbra={1} />
-                                            <Suspense fallback={null}>
-                                                <AncientCoin />
-                                            </Suspense>
-                                        </Canvas>
+                                    {/* Media Content Container */}
+                                    <div className="w-full md:w-80 h-64 md:h-80 relative flex-shrink-0 order-1 md:order-2">
+                                        <div className="absolute inset-0 bg-primary/20 rounded-[2rem] blur-3xl opacity-30 animate-pulse" />
+                                        <div className="relative w-full h-full rounded-[2rem] overflow-hidden border border-white/10 bg-white/5 backdrop-blur-sm group">
+                                            {currentStep.mediaPath ? (
+                                                <img
+                                                    src={currentStep.mediaPath}
+                                                    alt={currentStep.title}
+                                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                                />
+                                            ) : (
+                                                <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-white/5 to-white/0">
+                                                    <Target className="w-16 h-16 text-primary/20" />
+                                                </div>
+                                            )}
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none" />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
