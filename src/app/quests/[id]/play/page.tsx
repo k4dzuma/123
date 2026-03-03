@@ -8,6 +8,8 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useTheme } from '@/components/theme/theme-provider'
 import { ArrowLeft, Send, Lightbulb, Trophy, Loader2, CheckCircle2, XCircle, AlertTriangle, Star, Target } from 'lucide-react'
 import Link from 'next/link'
+import { Canvas } from '@react-three/fiber'
+import { AncientCoin } from '@/components/3d/ancient-coin'
 
 interface Step {
     id: number
@@ -232,12 +234,27 @@ export default function QuestPlayPage() {
                             className="rounded-[3rem] border border-white/10 p-10 md:p-16 bg-secondary/40 backdrop-blur-xl shadow-3xl"
                         >
                             <div className="mb-12">
-                                <h3 className="text-4xl font-sans font-black tracking-tighter uppercase text-white mb-6">
-                                    {currentStep.title}
-                                </h3>
-                                <p className="text-xl font-light tracking-wide text-white/60 leading-relaxed italic border-l-2 border-primary/20 pl-8 ml-2">
-                                    {currentStep.description}
-                                </p>
+                                <div className="flex flex-col md:flex-row gap-12 items-center mb-12">
+                                    <div className="flex-1">
+                                        <h3 className="text-4xl font-sans font-black tracking-tighter uppercase text-white mb-6">
+                                            {currentStep.title}
+                                        </h3>
+                                        <p className="text-xl font-light tracking-wide text-white/60 leading-relaxed italic border-l-2 border-primary/20 pl-8">
+                                            {currentStep.description}
+                                        </p>
+                                    </div>
+
+                                    {/* 3D Artifact Side View */}
+                                    <div className="w-64 h-64 md:w-80 md:h-80 relative flex-shrink-0">
+                                        <div className="absolute inset-0 bg-primary/5 rounded-full blur-3xl opacity-20" />
+                                        <Canvas camera={{ position: [0, 0, 10], fov: 45 }}>
+                                            <ambientLight intensity={0.5} />
+                                            <pointLight position={[10, 10, 10]} intensity={1} />
+                                            <spotLight position={[-10, 10, 10]} angle={0.15} penumbra={1} />
+                                            <AncientCoin />
+                                        </Canvas>
+                                    </div>
+                                </div>
                             </div>
 
                             <div className="flex items-center gap-6 text-[10px] font-black tracking-[0.3em] uppercase text-foreground/40 mb-12">
