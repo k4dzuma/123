@@ -103,3 +103,9 @@
     text-wrap: balance;
   }
 }
+
+/* Hide default cursor globally when custom cursor is mounted */
+html.custom-cursor-active,
+html.custom-cursor-active * {
+  cursor: none !important;
+}

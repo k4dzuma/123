@@ -35,6 +35,8 @@ export const viewport = {
 import { Navbar } from "@/components/layout/navbar";
 import { GlobalBackground } from "@/components/layout/global-background";
 
+import { CustomCursor } from "@/components/ui/custom-cursor";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -47,6 +49,7 @@ export default function RootLayout({
       >
         <NextAuthProvider>
           <ThemeProvider>
+            <CustomCursor />
             <GlobalBackground />
             <Navbar />
             <ToastProvider />
