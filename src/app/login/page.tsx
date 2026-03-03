@@ -137,9 +137,7 @@ export default function LoginPage() {
                             </p>
                         </div>
 
-                        <div className="mt-4 text-center text-white/30 text-xs">
-                            Тестовые данные: admin / admin123
-                        </div>
+
                     </div>
                 </motion.div>
             </div>
