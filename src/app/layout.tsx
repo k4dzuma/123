@@ -4,6 +4,9 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import NextAuthProvider from "@/components/providers/session-provider";
 import { ToastProvider } from "@/components/providers/toast-provider";
+import { ScrollProgress } from "@/components/ui/scroll-progress";
+import { Navbar } from "@/components/layout/navbar";
+import { GlobalBackground } from "@/components/layout/global-background";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -32,9 +35,6 @@ export const viewport = {
   themeColor: "#0a0b0d",
 };
 
-import { Navbar } from "@/components/layout/navbar";
-import { GlobalBackground } from "@/components/layout/global-background";
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -47,6 +47,7 @@ export default function RootLayout({
       >
         <NextAuthProvider>
           <ThemeProvider>
+            <ScrollProgress />
             <GlobalBackground />
             <Navbar />
             <ToastProvider />

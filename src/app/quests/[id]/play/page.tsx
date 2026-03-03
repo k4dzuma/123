@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useTheme } from '@/components/theme/theme-provider'
 import { ArrowLeft, Send, Lightbulb, Trophy, Loader2, CheckCircle2, XCircle, AlertTriangle, Star, Target } from 'lucide-react'
 import Link from 'next/link'
+import { QuestVictoryConfetti } from '@/components/ui/quest-victory-confetti'
 
 interface Step {
     id: number
@@ -154,38 +155,75 @@ export default function QuestPlayPage() {
     if (completed) {
         return (
             <>
-                <div className="min-h-screen flex items-center justify-center bg-transparent py-40">
+                <QuestVictoryConfetti />
+                <div className="min-h-screen flex items-center justify-center bg-transparent py-40 overflow-hidden">
                     <motion.div
-                        initial={{ scale: 0.8, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        transition={{ type: 'spring', stiffness: 100 }}
-                        className="text-center p-12 bg-secondary/40 backdrop-blur-2xl rounded-[3rem] border border-white/10 shadow-3xl max-w-lg w-full mx-4"
+                        initial={{ scale: 0.8, opacity: 0, filter: 'blur(20px)' }}
+                        animate={{ scale: 1, opacity: 1, filter: 'blur(0px)' }}
+                        transition={{ type: 'spring', stiffness: 50, damping: 20 }}
+                        className="text-center p-12 md:p-20 bg-secondary/40 backdrop-blur-3xl rounded-[4rem] border border-white/10 shadow-[0_0_100px_rgba(var(--primary-rgb),0.1)] max-w-2xl w-full mx-4 relative"
                     >
-                        <div className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-8 border border-primary/20 shadow-2xl shadow-primary/10">
-                            <Trophy className="w-12 h-12 text-primary" />
-                        </div>
-                        <h1 className="text-4xl font-sans font-black tracking-tighter uppercase text-white mb-4">Миссия <span className="text-primary italic font-serif lowercase tracking-normal">выполнена.</span></h1>
-                        <p className="text-foreground/40 font-light tracking-wide mb-10 leading-relaxed">Вы успешно завершили исследование цифровых архивов и пополнили свою коллекцию баллов.</p>
+                        <motion.div
+                            initial={{ y: 20, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ delay: 0.5 }}
+                            className="w-32 h-32 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-10 border border-primary/20 shadow-3xl shadow-primary/20 relative"
+                        >
+                            <Trophy className="w-16 h-16 text-primary z-10" />
+                            <div className="absolute inset-0 bg-primary blur-3xl opacity-20 animate-pulse" />
+                        </motion.div>
 
-                        <div className="bg-white/5 rounded-3xl border border-white/5 p-10 mb-10 transition-luxury hover:bg-white/10">
-                            <p className="text-foreground/40 text-[10px] font-black tracking-[0.3em] uppercase mb-4">Результат исследования</p>
-                            <p className="text-7xl font-sans font-black tracking-tighter text-white">
-                                {score}
-                            </p>
-                        </div>
+                        <h1 className="text-5xl md:text-7xl font-sans font-black tracking-tighter uppercase text-white mb-6 leading-none">
+                            <motion.span
+                                initial={{ opacity: 0, y: 30 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.6 }}
+                                className="block"
+                            >Миссия</motion.span>
+                            <motion.span
+                                initial={{ opacity: 0, y: 30 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.8 }}
+                                className="text-primary italic font-serif lowercase tracking-normal block mt-2"
+                            >выполнена.</motion.span>
+                        </h1>
 
-                        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                        <p className="text-xl md:text-2xl text-foreground/40 font-light tracking-wide mb-12 leading-relaxed max-w-md mx-auto">
+                            Вы успешно завершили исследование цифровых архивов.
+                        </p>
+
+                        <motion.div
+                            initial={{ scale: 0.9, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            transition={{ delay: 1.2 }}
+                            className="bg-white/5 rounded-3xl border border-white/5 p-12 mb-12 group transition-all duration-700 hover:bg-white/10 hover:border-primary/20 cursor-default"
+                        >
+                            <p className="text-foreground/40 text-[10px] font-black tracking-[0.4em] uppercase mb-6">Результат исследования</p>
+                            <div className="relative inline-block">
+                                <p className="text-8xl md:text-9xl font-sans font-black tracking-tighter text-white relative z-10">
+                                    {score}
+                                </p>
+                                <div className="absolute inset-0 bg-primary blur-3xl opacity-10 group-hover:opacity-30 transition-opacity" />
+                            </div>
+                        </motion.div>
+
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 1.5 }}
+                            className="flex flex-col sm:flex-row gap-6 justify-center"
+                        >
                             <Link href="/quests" className="flex-1">
-                                <button className="w-full px-8 py-4 rounded-full bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-luxury uppercase font-black tracking-widest text-[10px] magnetic-btn">
+                                <button className="w-full px-10 py-6 rounded-full bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-luxury uppercase font-black tracking-widest text-[10px] magnetic-btn">
                                     К архивам
                                 </button>
                             </Link>
                             <Link href="/leaderboard" className="flex-1">
-                                <button className="w-full px-8 py-4 rounded-full bg-primary text-white hover:bg-white hover:text-black transition-luxury uppercase font-black tracking-widest text-[10px] shadow-xl shadow-primary/20 magnetic-btn">
+                                <button className="w-full px-10 py-6 rounded-full bg-primary text-white hover:bg-white hover:text-black transition-luxury uppercase font-black tracking-widest text-[10px] shadow-2xl shadow-primary/20 magnetic-btn">
                                     Таблица лидеров
                                 </button>
                             </Link>
-                        </div>
+                        </motion.div>
                     </motion.div>
                 </div>
                 <Footer />
