@@ -7,6 +7,7 @@ import { Footer } from '@/components/layout/footer'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useTheme } from '@/components/theme/theme-provider'
 import { Gamepad2, Clock, Zap, ChevronRight, Loader2, Trophy, Star, Users, Award, Crown } from 'lucide-react'
+import { SpotlightCard } from '@/components/ui/spotlight-card'
 
 interface Quest {
   id: number
@@ -139,7 +140,7 @@ export default function QuestsPage() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: i * 0.1 }}
                       >
-                        <div className="group rounded-[2.5rem] border border-white/10 p-8 md:p-10 h-full flex flex-col transition-all duration-700 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] bg-secondary/40 backdrop-blur-xl hover:border-primary/30 hover:bg-secondary/60 hover:-translate-y-2 shadow-2xl">
+                        <SpotlightCard className="group rounded-[2.5rem] border border-white/10 p-8 md:p-10 h-full flex flex-col transition-all duration-700 ease-[cubic-bezier(0.25,0.46,0.45,0.94)] bg-secondary/40 backdrop-blur-xl hover:border-primary/30 hover:bg-secondary/60 hover:-translate-y-2 shadow-2xl">
                           <div className="flex items-start justify-between mb-8">
                             <div className="p-4 rounded-2xl bg-primary/10">
                               <Gamepad2 className="w-8 h-8 text-primary" />
@@ -195,7 +196,7 @@ export default function QuestsPage() {
                               </button>
                             </Link>
                           )}
-                        </div>
+                        </SpotlightCard>
                       </motion.div>
                     )
                   })}
