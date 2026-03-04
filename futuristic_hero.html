@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ИСКУССТВО — Будущее</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;900&family=Manrope:wght@300;800&family=Playfair+Display:ital,wght@1,900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #050505;
+            --white: #ffffff;
+            --purple: #a855f7;
+            --gold: #d4af37;
+            --text-secondary: rgba(255, 255, 255, 0.5);
+            --transition: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* --- Noise Overlay --- */
+        .noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.05;
+            z-index: 999;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* --- Ambient Background --- */
+        .ambient {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .blob {
+            position: absolute;
+            width: 60vmax;
+            height: 60vmax;
+            background: radial-gradient(circle, rgba(168, 85, 247, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            top: -10%;
+            left: -10%;
+            filter: blur(80px);
+            animation: move 20s infinite alternate linear;
+        }
+
+        .blob-2 {
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.03) 0%, transparent 70%);
+            bottom: -10%;
+            right: -10%;
+            width: 50vmax;
+            height: 50vmax;
+            animation: move 25s infinite alternate-reverse linear;
+        }
+
+        @keyframes move {
+            from { transform: translate(0, 0); }
+            to { transform: translate(10%, 10%); }
+        }
+
+        /* --- Main Layout --- */
+        .container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 1400px;
+            padding: 0 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        @media (min-width: 1024px) {
+            .container {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+            }
+        }
+
+        /* --- Typography --- */
+        .hero-text {
+            max-width: 800px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 1.2s var(--transition) forwards;
+        }
+
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-family: 'Manrope', sans-serif;
+            font-weight: 800;
+            font-size: clamp(4rem, 12vw, 10rem);
+            line-height: 0.85;
+            letter-spacing: -0.05em;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .accent-line {
+            display: block;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-weight: 900;
+            color: var(--purple);
+            font-size: 0.7em;
+            margin-left: 0.25em;
+            transform: skewX(-5deg);
+            background: linear-gradient(90deg, var(--purple), #d8b4fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(168, 85, 247, 0.2);
+        }
+
+        .description {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            line-height: 1.6;
+            margin-top: 40px;
+            max-width: 400px;
+            border-left: 1px solid rgba(255,255,255,0.1);
+            padding-left: 24px;
+        }
+
+        /* --- Buttons --- */
+        .btn-group {
+            margin-top: 60px;
+            display: flex;
+            gap: 24px;
+            opacity: 0;
+            animation: fadeIn 1s 0.5s var(--transition) forwards;
+        }
+
+        @keyframes fadeIn { to { opacity: 1; } }
+
+        .btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--white);
+            padding: 18px 36px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.25em;
+            cursor: pointer;
+            transition: all 0.4s var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            backdrop-filter: blur(10px);
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .btn-primary {
+            background: var(--white);
+            color: var(--bg);
+            border-color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background: #e5e5e5;
+            color: var(--bg);
+        }
+
+        /* --- 3D Diamond / Octahedron --- */
+        .visual-accent {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            flex-shrink: 0;
+            opacity: 0;
+            animation: fadeIn 1.5s 0.8s var(--transition) forwards;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 40px;
+        }
+
+        @media (min-width: 1024px) {
+            .visual-accent {
+                margin-top: 0;
+                margin-right: 50px;
+            }
+        }
+
+        .diamond-container {
+            position: relative;
+            transform-style: preserve-3d;
+            animation: rotateDiamond 20s infinite linear;
+        }
+
+        @keyframes rotateDiamond {
+            from { transform: rotateY(0deg) rotateX(15deg); }
+            to { transform: rotateY(360deg) rotateX(15deg); }
+        }
+
+        .diamond {
+            width: 80px;
+            height: 140px;
+            background: linear-gradient(135deg, #d4af37, #fcd34d);
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            box-shadow: 0 0 40px rgba(212, 175, 55, 0.4);
+            position: relative;
+        }
+
+        .diamond::after {
+            content: '';
+            position: absolute;
+            inset: 2px;
+            background: var(--bg);
+            clip-path: inherit;
+            opacity: 0.9;
+        }
+
+        /* Simplified 3D look with pseudo-elements */
+        .diamond-inner {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 30% 30%, rgba(212, 175, 55, 0.8), transparent);
+            z-index: 1;
+        }
+
+        /* The Ring/Orbit */
+        .orbit {
+            position: absolute;
+            width: 240px;
+            height: 240px;
+            border: 0.5px solid rgba(212, 175, 55, 0.3);
+            border-radius: 50%;
+            transform: rotateX(75deg) rotateY(-10deg);
+            animation: pulseOrbit 8s infinite ease-in-out;
+        }
+
+        .orbit::before {
+            content: '';
+            position: absolute;
+            inset: -10px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.1), transparent 70%);
+            filter: blur(10px);
+        }
+
+        @keyframes pulseOrbit {
+            0%, 100% { transform: rotateX(75deg) rotateY(-10deg) scale(1); opacity: 0.3; }
+            50% { transform: rotateX(75deg) rotateY(-10deg) scale(1.05); opacity: 0.6; }
+        }
+
+        /* --- Stars --- */
+        .stars {
+            position: fixed;
+            width: 1px;
+            height: 1px;
+            background: white;
+            box-shadow: 
+                24vw 15vh white, 67vw 34vh white, 89vw 5vh white, 45vw 88vh white,
+                12vw 65vh white, 78vw 92vh white, 5vw 22vh white, 95vw 55vh white;
+            border-radius: 50%;
+            opacity: 0.2;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="noise"></div>
+    <div class="stars"></div>
+    
+    <div class="ambient">
+        <div class="blob"></div>
+        <div class="blob-2"></div>
+    </div>
+
+    <div class="container">
+        <div class="hero-text">
+            <h1>
+                ИСКУССТВО
+                <span class="accent-line">ДЛЯ ИДУЩЕГО БУДУЩЕГО</span>
+            </h1>
+            
+            <p class="description">
+                Цифровая курация наследия человечества.<br>
+                Бесконечная галерея, доступная каждому.
+            </p>
+
+            <div class="btn-group">
+                <a href="#" class="btn btn-primary">ГАЛЕРЕЯ &rarr;</a>
+                <a href="#" class="btn">КВЕСТЫ &nbsp;▷</a>
+            </div>
+        </div>
+
+        <div class="visual-accent">
+            <div class="orbit"></div>
+            <div class="diamond-container">
+                <div class="diamond">
+                    <div class="diamond-inner"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple parallax effect for the diamond on mouse move
+        const visual = document.querySelector('.visual-accent');
+        document.addEventListener('mousemove', (e) => {
+            const x = (window.innerWidth / 2 - e.pageX) / 50;
+            const y = (window.innerHeight / 2 - e.pageY) / 50;
+            visual.style.transform = `translate(${x}px, ${y}px)`;
+        });
+
+        // Magnetic effect for buttons
+        const btns = document.querySelectorAll('.btn');
+        btns.forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                btn.style.transform = `translate(${x * 0.2}px, ${y * 0.3}px) scale(1.03)`;
+            });
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = `translate(0, 0) scale(1)`;
+            });
+        });
+    </script>
+</body>
+</html>
